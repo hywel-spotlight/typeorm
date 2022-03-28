@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import {
   AbstractRepository,
   Connection,
-  ConnectionOptions,
+  DataSourceOptions,
   getMetadataArgsStorage,
   Repository,
 } from 'typeorm';
@@ -11,7 +11,7 @@ import { EntityClassOrSchema } from './interfaces/entity-class-or-schema.type';
 
 export function createTypeOrmProviders(
   entities?: EntityClassOrSchema[],
-  connection?: Connection | ConnectionOptions | string,
+  connection?: Connection | DataSourceOptions | string,
 ): Provider[] {
   return (entities || []).map((entity) => ({
     provide: getRepositoryToken(entity, connection),

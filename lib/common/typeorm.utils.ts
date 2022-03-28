@@ -4,10 +4,10 @@ import { delay, retryWhen, scan } from 'rxjs/operators';
 import {
   AbstractRepository,
   Connection,
-  ConnectionOptions,
+  DataSourceOptions,
   EntityManager,
   EntitySchema,
-  Repository
+  Repository,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { CircularDependencyException } from '../exceptions/circular-dependency.exception';
@@ -24,7 +24,7 @@ const logger = new Logger('TypeOrmModule');
  */
 export function getRepositoryToken(
   entity: EntityClassOrSchema,
-  connection: Connection | ConnectionOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: Connection | DataSourceOptions | string = DEFAULT_CONNECTION_NAME,
 ): Function | string {
   if (entity === null || entity === undefined) {
     throw new CircularDependencyException('@InjectRepository()');
@@ -62,13 +62,13 @@ export function getCustomRepositoryToken(repository: Function): string {
 }
 
 /**
- * This function returns a Connection injection token for the given Connection, ConnectionOptions or connection name.
- * @param {Connection | ConnectionOptions | string} [connection='default'] This optional parameter is either
- * a Connection, or a ConnectionOptions or a string.
+ * This function returns a Connection injection token for the given Connection, DataSourceOptions or connection name.
+ * @param {Connection | DataSourceOptions | string} [connection='default'] This optional parameter is either
+ * a Connection, or a DataSourceOptions or a string.
  * @returns {string | Function} The Connection injection token.
  */
 export function getConnectionToken(
-  connection: Connection | ConnectionOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: Connection | DataSourceOptions | string = DEFAULT_CONNECTION_NAME,
 ): string | Function | Type<Connection> {
   return DEFAULT_CONNECTION_NAME === connection
     ? Connection
@@ -81,12 +81,12 @@ export function getConnectionToken(
 
 /**
  * This function returns a Connection prefix based on the connection name
- * @param {Connection | ConnectionOptions | string} [connection='default'] This optional parameter is either
- * a Connection, or a ConnectionOptions or a string.
+ * @param {Connection | DataSourceOptions | string} [connection='default'] This optional parameter is either
+ * a Connection, or a DataSourceOptions or a string.
  * @returns {string | Function} The Connection injection token.
  */
 export function getConnectionPrefix(
-  connection: Connection | ConnectionOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: Connection | DataSourceOptions | string = DEFAULT_CONNECTION_NAME,
 ): string {
   if (connection === DEFAULT_CONNECTION_NAME) {
     return '';
@@ -101,13 +101,13 @@ export function getConnectionPrefix(
 }
 
 /**
- * This function returns an EntityManager injection token for the given Connection, ConnectionOptions or connection name.
- * @param {Connection | ConnectionOptions | string} [connection='default'] This optional parameter is either
- * a Connection, or a ConnectionOptions or a string.
+ * This function returns an EntityManager injection token for the given Connection, DataSourceOptions or connection name.
+ * @param {Connection | DataSourceOptions | string} [connection='default'] This optional parameter is either
+ * a Connection, or a DataSourceOptions or a string.
  * @returns {string | Function} The EntityManager injection token.
  */
 export function getEntityManagerToken(
-  connection: Connection | ConnectionOptions | string = DEFAULT_CONNECTION_NAME,
+  connection: Connection | DataSourceOptions | string = DEFAULT_CONNECTION_NAME,
 ): string | Function {
   return DEFAULT_CONNECTION_NAME === connection
     ? EntityManager
@@ -142,8 +142,9 @@ export function handleRetry(
               : '';
 
             logger.error(
-              `Unable to connect to the database${connectionInfo}.${verboseMessage} Retrying (${errorCount +
-                1})...`,
+              `Unable to connect to the database${connectionInfo}.${verboseMessage} Retrying (${
+                errorCount + 1
+              })...`,
               error.stack,
             );
             if (errorCount + 1 >= retryAttempts) {
@@ -157,7 +158,7 @@ export function handleRetry(
     );
 }
 
-export function getConnectionName(options: ConnectionOptions): string {
+export function getConnectionName(options: DataSourceOptions): string {
   return options && options.name ? options.name : DEFAULT_CONNECTION_NAME;
 }
 

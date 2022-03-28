@@ -1,5 +1,5 @@
 import { ModuleMetadata, Type } from '@nestjs/common';
-import { Connection, ConnectionOptions } from 'typeorm';
+import { Connection, DataSourceOptions } from 'typeorm';
 
 export type TypeOrmModuleOptions = {
   /**
@@ -32,7 +32,7 @@ export type TypeOrmModuleOptions = {
    * If `true`, will show verbose error messages on each connection retry.
    */
   verboseRetryLog?: boolean;
-} & Partial<ConnectionOptions>;
+} & Partial<DataSourceOptions>;
 
 export interface TypeOrmOptionsFactory {
   createTypeOrmOptions(
@@ -41,7 +41,7 @@ export interface TypeOrmOptionsFactory {
 }
 
 export type TypeOrmConnectionFactory = (
-  options?: ConnectionOptions,
+  options?: DataSourceOptions,
 ) => Promise<Connection>;
 
 export interface TypeOrmModuleAsyncOptions

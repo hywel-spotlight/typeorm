@@ -1,5 +1,5 @@
 import { Inject } from '@nestjs/common';
-import { Connection, ConnectionOptions } from 'typeorm';
+import { Connection, DataSourceOptions } from 'typeorm';
 import { EntityClassOrSchema } from '../interfaces/entity-class-or-schema.type';
 import { DEFAULT_CONNECTION_NAME } from '../typeorm.constants';
 import {
@@ -14,13 +14,13 @@ export const InjectRepository = (
 ): ReturnType<typeof Inject> => Inject(getRepositoryToken(entity, connection));
 
 export const InjectConnection: (
-  connection?: Connection | ConnectionOptions | string,
+  connection?: Connection | DataSourceOptions | string,
 ) => ReturnType<typeof Inject> = (
-  connection?: Connection | ConnectionOptions | string,
+  connection?: Connection | DataSourceOptions | string,
 ) => Inject(getConnectionToken(connection));
 
 export const InjectEntityManager: (
-  connection?: Connection | ConnectionOptions | string,
+  connection?: Connection | DataSourceOptions | string,
 ) => ReturnType<typeof Inject> = (
-  connection?: Connection | ConnectionOptions | string,
+  connection?: Connection | DataSourceOptions | string,
 ) => Inject(getEntityManagerToken(connection));

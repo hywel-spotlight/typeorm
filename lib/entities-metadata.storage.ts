@@ -1,7 +1,7 @@
-import { Connection, ConnectionOptions } from 'typeorm';
+import { Connection, DataSourceOptions } from 'typeorm';
 import { EntityClassOrSchema } from './interfaces/entity-class-or-schema.type';
 
-type ConnectionToken = Connection | ConnectionOptions | string;
+type ConnectionToken = Connection | DataSourceOptions | string;
 
 export class EntitiesMetadataStorage {
   private static readonly storage = new Map<string, EntityClassOrSchema[]>();
